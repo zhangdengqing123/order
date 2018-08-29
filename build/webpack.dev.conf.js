@@ -53,7 +53,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
-	before(app) {
+	  before(app) {
       app.get('/api/seller', (req, res) => {
         res.json({
           // 这里是你的json内容
