@@ -4,11 +4,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    seller: {}
+    goods: []
   },
   getters: {
     rseult: state => {
-      console.log(state.seller)
+      return state.goods
     }
   }
 })

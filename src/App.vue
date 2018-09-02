@@ -12,7 +12,9 @@
         <router-link :to="{name: 'seller'}">商家</router-link>
       </div>
     </div>
-    <router-view/>
+    <keep-alive>
+      <router-view :seller="seller"/>
+    </keep-alive>
   </div>
 </template>
 

@@ -33,7 +33,14 @@
   }
 }
 
+.border-none() {
+  &:after {
+    display: none;
+  }
+}
+
 @iconUrl: '../../components/header/img/';
+@goodsUrl: '../../components/goods/img/';
 @starUrl: '../../components/star/img/';
 .bg-image(@url) {
   background-image: url('@{url}@2x.png');

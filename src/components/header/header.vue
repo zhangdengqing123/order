@@ -195,7 +195,7 @@ export default {
       background-repeat: no-repeat;
     }
     .bulletin {
-      line-height: 1.4rem;
+      line-height: 1.5rem;
       margin: 0 .2rem;
       font-size: .5rem;
       font-weight: @fw200;
