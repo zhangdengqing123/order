@@ -38,11 +38,9 @@
                     <span class="new-price"><span class="currency">￥</span>{{food.price}}</span>
                     <span class="old-price" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
-                  <div class="shopping-car">
-                    <span class="icon-remove_circle_outline"></span>
-                    <span class="num">1</span>
-                    <span class="icon-add_circle"></span>
-                  </div>
+                </div>
+                <div class="cartcontrol-wrapper">
+                  <cart-control :food="food"></cart-control>
                 </div>
               </div>
             </li>
@@ -58,7 +56,7 @@
 import axios from 'axios'
 import BScroll from 'better-scroll'
 import ShopCart from '@/components/shopcart/shopcart'
-
+import CartControl from '@/components/cartcontrol/cartcontrol'
 export default {
   name: 'v-goods',
   props: {
@@ -73,7 +71,8 @@ export default {
     }
   },
   components: {
-    'v-shopcart': ShopCart
+    'v-shopcart': ShopCart,
+    'cart-control': CartControl
   },
   methods: {
     getGoodsInfo () {
@@ -235,6 +234,7 @@ export default {
           }
         }
         .foot-content {
+          position: relative;
           flex: 1;
           margin: .1rem 0 0 .5rem;
           .title {
@@ -267,7 +267,6 @@ export default {
             box-sizing: border-box;
           }
           .price {
-            position: relative;
             display: flex;
             line-height: 1.2rem;
             .price-amount {
@@ -289,22 +288,11 @@ export default {
                 color: rgb(147, 153, 159);
               }
             }
-            .shopping-car {
-              position: absolute;
-              left: 3.78rem;
-              margin-top: .25rem;
-              .num {
-                line-height: 1.2rem;
-                vertical-align: top;
-                font-size: .5rem;
-                color: rgb(147, 153, 159);
-              }
-              .icon-remove_circle_outline, .icon-add_circle {
-                line-height: 1.2rem;
-                font-size: 1.2rem;
-                color: rgb(0, 160, 220);
-              }
-            }
+          }
+          .cartcontrol-wrapper {
+            position: absolute;
+            right: 0;
+            bottom:.2rem;
           }
         }
       }

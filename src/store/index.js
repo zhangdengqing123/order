@@ -7,8 +7,16 @@ export default new Vuex.Store({
     goods: []
   },
   getters: {
-    rseult: state => {
-      return state.goods
+    selectFoods: state => {
+      let foods = []
+      state.goods.map(good => {
+        good.foods.forEach(food => {
+          if (food.count) {
+            foods.push(food)
+          }
+        })
+      })
+      return foods
     }
   }
 })

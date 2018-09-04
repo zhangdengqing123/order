@@ -2,6 +2,8 @@
  * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
  * http://cssreset.com
  */
+* { touch-action: pan-y; } /*浏览器控制台出现[Intervention] Unable to preventDefault inside passive event listener due to target being treated as passive. 
+See https解决方法添加全局样式{ touch-action: pan-y; }*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,

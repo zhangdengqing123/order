@@ -27,17 +27,6 @@ export default {
     }
   },
   props: {
-    selectFoods: {
-      type: Array,
-      default () {
-        return [
-          {
-            price: 10,
-            count: 2
-          }
-        ]
-      }
-    },
     deliveryPrice: {
       type: Number,
       default: 0
@@ -48,19 +37,17 @@ export default {
     }
   },
   computed: {
-    shopCart () {
-      return this.$store.state.goods
-    },
     totalPricet () {
       let total = 0
-      this.selectFoods.forEach((food) => {
+      // console.log(this.$store.getters.selectFoods)获取状态管理的getters数据
+      this.$store.getters.selectFoods.map((food) => {
         total += food.price * food.count
       })
       return total
     },
     totalCount () {
       let count = 0
-      this.selectFoods.forEach((food) => {
+      this.$store.getters.selectFoods.map((food) => {
         count += food.count
       })
       return count
