@@ -40,7 +40,7 @@
                   </div>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cart-control :food="food"></cart-control>
+                  <cart-control @add="addFood" :food="food"></cart-control>
                 </div>
               </div>
             </li>
@@ -48,7 +48,7 @@
         </li>
       </ul>
     </div>
-    <v-shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></v-shopcart>
+    <v-shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" ref="shopcart"></v-shopcart>
   </div>
 </template>
 
@@ -117,6 +117,14 @@ export default {
       let foodList = this.$refs.foodlist
       let el = foodList[index]
       this.foodScroll.scrollToElement(el, 300)
+    },
+    addFood (target) {
+      this._drop(target)
+    },
+    _drop (target) {
+      this.$nextTick(() => { // 体验优化，异步执行下落动画
+        this.$refs.shopcart.drop(target)
+      })
     }
   },
   computed: {
@@ -147,7 +155,7 @@ export default {
   display: flex;
   position: absolute;
   top: 8.7rem;
-  bottom: 3.2rem;
+  bottom: 2.3rem;
   width: 100%;
   overflow: hidden;
   .menu-wrapper {
@@ -166,7 +174,7 @@ export default {
           .text{
             color: red;
             font-weight: 700;
-            }
+          }
         }
         .icon {
           display: inline-block;

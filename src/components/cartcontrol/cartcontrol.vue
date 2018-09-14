@@ -1,10 +1,10 @@
 <template>
   <div class="cartcontrol">
     <transition name="move">
-      <span class="cart-decrease icon-remove_circle_outline" @click="decreaseCart" v-show="food.count>0"></span>
+      <span class="cart-decrease icon-remove_circle_outline" @click.stop.prevent="decreaseCart($event)" v-show="food.count>0"></span>
     </transition>
     <span class="num" v-show="food.count>0">{{food.count}}</span>
-    <span class="icon-add_circle" @click="addCart"></span>
+    <span class="icon-add_circle" @click.stop.prevent="addCart"></span>
   </div>
 </template>
 
@@ -18,12 +18,13 @@ export default {
     }
   },
   methods: {
-    addCart () {
+    addCart (event) {
       if (!this.food.count) {
         Vue.set(this.food, 'count', 1)
       } else {
         this.food.count++
       }
+      this.$emit('add', event.target)
     },
     decreaseCart () {
       if (this.food.count) {
