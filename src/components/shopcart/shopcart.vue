@@ -9,7 +9,7 @@
           <div class="num" v-show="totalCount>0">{{totalCount}}</div>
         </div>
         <div class="price" :class="{'highlight': totalPricet>0}">￥{{totalPricet}}</div>
-        <div class="desc">另需配送费￥{{deliveryPrice}}</div>
+        <div class="desc">1111另需配送费￥{{deliveryPrice}}</div>
       </div>
       <div class="content-right" @click.stop.prevent="pay">
         <div class="pay" :class="payClass">{{payDesc}}</div>
