@@ -11,7 +11,7 @@
         <div class="price" :class="{'highlight': totalPricet>0}">￥{{totalPricet}}</div>
         <div class="desc">另需配送费￥{{deliveryPrice}}</div>
       </div>
-      <div class="content-right">
+      <div class="content-right" @click.stop.prevent="pay">
         <div class="pay" :class="payClass">{{payDesc}}</div>
       </div>
     </div>
@@ -147,6 +147,12 @@ export default {
     },
     hideList () {
       this.fold = false
+    },
+    pay () {
+      if (this.totalPricet < this.minPrice) {
+        return
+      }
+      alert(`支付${this.totalPricet}元`)
     }
   },
   computed: {
@@ -402,7 +408,7 @@ export default {
     background: rgba(7, 17, 27, .6);
     backdrop-filter: blur(10px);
     &.fade-enter-active, &.fade-leave-active{
-      transition: 0.4s;
+      transition: all 0.5s;
     }
     &.fade-enter, &.fade-leave-to {
       opacity: 0;
