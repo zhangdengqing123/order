@@ -20,7 +20,7 @@
         <li v-for="(item, index) of goods" :key="index" class="foods-list" ref="foodlist">
           <h1 class="foods-name">{{item.name}}</h1>
           <ul>
-            <li v-for="food of item.foods" :key="food.name" class="food border-1px-t">
+            <li @click="seledFood(food,$event)" v-for="food of item.foods" :key="food.name" class="food border-1px-t">
               <div class="foot-icon">
                 <img width="2.85rem" height="2.85rem" :src="food.icon">
               </div>
@@ -49,6 +49,7 @@
       </ul>
     </div>
     <v-shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" ref="shopcart"></v-shopcart>
+    <food :food="selectedFood" ref="food"></food>
   </div>
 </template>
 
@@ -57,6 +58,7 @@ import axios from 'axios'
 import BScroll from 'better-scroll'
 import ShopCart from '@/components/shopcart/shopcart'
 import CartControl from '@/components/cartcontrol/cartcontrol'
+import Food from '@/components/food/food'
 export default {
   name: 'v-goods',
   props: {
@@ -67,14 +69,20 @@ export default {
   data () {
     return {
       listHeight: [],
-      scrollY: 0
+      scrollY: 0,
+      selectedFood: {}
     }
   },
   components: {
     'v-shopcart': ShopCart,
-    'cart-control': CartControl
+    'cart-control': CartControl,
+    'food': Food
   },
   methods: {
+    seledFood (food, e) {
+      this.selectedFood = food
+      this.$refs.food.show() // 父组件调用子组件方法
+    },
     getGoodsInfo () {
       axios.get('/api/goods')
         .then(this.getGoodsInfoSucc)

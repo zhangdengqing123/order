@@ -351,6 +351,7 @@ export default {
     .list-header {
       height: 2rem;
       line-height: 2rem;
+      padding: 0 .8rem;
       border-bottom: solid 1px rgba(0, 17, 27, 0.1);
       background-color: #f3f5f7;
       .title {
