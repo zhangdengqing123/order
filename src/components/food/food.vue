@@ -33,6 +33,37 @@
            <h1 class="title">商品详情</h1>
            <p class="text">{{food.info}}</p>
          </div>
+         <v-split></v-split>
+         <div class="rating">
+           <h1 class="title">商品评价</h1>
+           <ratingselect
+              @increment="onSelectType"
+              @toggle="toggleContent"
+              :selec-type="selecType"
+              :only-content="onlyContent"
+              :desc="desc"
+              :ratings="food.ratings">
+            </ratingselect>
+            <div class="rating-wraper">
+              <ul class="" v-show="food.ratings && food.ratings.length">
+                <li v-show="needShow(rating.rateType, rating.text)"
+                    v-for="(rating, index) in food.ratings"
+                    class="rating-item border-1px-t"
+                    :key="index">
+                  <div class="user">
+                    <span class="name">{{rating.username}}</span>
+                    <img class="avatar" :src="rating.avatar" width="12" height="12"/>
+                  </div>
+                  <div class="time">{{rating.rateTime | formatDateY}}</div>
+                  <p class="text">
+                    <span :class="{'icon-thumb_up': rating.rateType===0,
+                    'icon-thumb_down': rating.rateType===1}"></span>{{rating.text}}
+                  </p>
+                </li>
+              </ul>
+              <div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
+            </div>
+         </div>
       </div>
     </div>
   </transition>
@@ -40,10 +71,13 @@
 
 <script type='text/ecmascript-6'>
 import BScroll from 'better-scroll'
+import { formatDate } from '@/common/js/date'
 import Vue from 'vue'
 import cartcontrol from '@/components/cartcontrol/cartcontrol'
+import ratingselect from '@/components/ratingselect/ratingselect'
 import Fade from '@/components/fade/fade'
 import Split from '@/components/split/split'
+const All = 2
 
 export default {
   name: 'food',
@@ -54,17 +88,33 @@ export default {
   },
   data () {
     return {
-      foodFlag: false
+      foodFlag: false,
+      selecType: All,
+      onlyContent: true,
+      desc: {
+        all: '全部',
+        positive: '推荐',
+        negative: '吐槽'
+      }
     }
   },
   components: {
     'v-fade': Fade,
     cartcontrol,
+    ratingselect,
     'v-split': Split
+  },
+  filters: {
+    formatDateY (time) {
+      let date = new Date(time)
+      return formatDate(date, 'yyyy-MM-dd hh:mm')
+    }
   },
   methods: {
     show () {
       this.foodFlag = true
+      this.selecType = All
+      this.onlyContent = true
       this.$nextTick(() => {
         if (!this.scroll) {
           this.scroll = new BScroll(this.$refs.food, {
@@ -82,12 +132,36 @@ export default {
       if (!this.food.count) {
         Vue.set(this.food, 'count', 1)
       }
+    },
+    onSelectType (type) {
+      console.log(type)
+      this.selecType = type
+      this.$nextTick(() => {
+        this.scroll.refresh()
+      })
+    },
+    toggleContent () {
+      this.onlyContent = !this.onlyContent
+      this.$nextTick(() => {
+        this.scroll.refresh()
+      })
+    },
+    needShow (type, text) {
+      if (this.onlyContent && !text) { // 判断只显示评价有内容，没有直接内容直接跳过
+        return false
+      }
+      if (this.selecType === All) { // 判断显示所有内容，有或没有都显示
+        return true
+      } else {
+        return type === this.selecType // 判断选择类型是否匹配
+      }
     }
   }
 }
 </script>
 
 <style lang='less' scoped>
+@import '../../common/less/mixni.less';
 .food {
   position: fixed;
   left: 0;
@@ -206,6 +280,65 @@ export default {
       line-height: 1.2rem;
       text-align: justify;
       color: rgb(77, 85, 93);
+    }
+  }
+  .rating {
+    padding-top: .9rem;
+    .title {
+      line-height: 0.7rem;
+      margin-left: 0.9rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgb(7, 17, 27);
+    }
+    .rating-wraper {
+      padding: 0 .9rem;
+      .rating-item {
+        position: relative;
+        padding: .8rem 0;
+        .border-1px-t(rgba(7, 17, 27, .1));
+        .user {
+          position: absolute;
+          right: 0;
+          top: .8rem;
+          line-height: .6rem;
+          font-size:0;
+          .name {
+            display: inline-block;
+            vertical-align: top;
+            font-size: .5rem;
+            color: rgb(147, 153, 159);
+          }
+          .avatar {
+            margin-left: .3rem;
+            border-radius: 50%;
+          }
+        }
+        .time {
+          margin-bottom: .3rem;
+          line-height: .6rem;
+          font-size: .5rem;
+          color: rgb(147, 153, 159);
+        }
+        .text {
+          line-height: .8rem;
+          font-size: .6rem;
+          color: rgb(7, 17, 27);
+          .icon-thumb_up, .icon-thumb_down {
+            line-height: .8rem;
+            padding-right: .2rem;
+            color: rgb(147, 153, 159);
+          }
+          .icon-thumb_up {
+            color: rgb(0, 160, 220);
+          }
+        }
+      }
+      .no-rating {
+        padding: .8rem 0;
+        font-size: .6rem;
+        color: rgb(147, 153, 159);
+      }
     }
   }
 }
