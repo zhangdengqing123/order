@@ -84,7 +84,7 @@ export default {
       this.$refs.food.show() // 父组件调用子组件方法
     },
     getGoodsInfo () {
-      axios.get('/api/goods')
+      axios.get('/api/goods?id=' + this.seller.id)
         .then(this.getGoodsInfoSucc)
     },
     getGoodsInfoSucc (response) {

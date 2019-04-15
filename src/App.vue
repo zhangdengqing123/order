@@ -19,13 +19,19 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {urlParse} from '@/common/js/util'
 import header from '@/components/header/header'
 import axios from 'axios'
 export default {
   name: 'App',
   data () {
     return {
-      seller: {}
+      seller: {
+        id: (() => {
+          let queryParam = urlParse()
+          return queryParam.id
+        })()
+      }
     }
   },
   components: {
@@ -33,7 +39,7 @@ export default {
   },
   methods: {
     getSellerInfo () {
-      axios.get('/api/seller')
+      axios.get('/api/seller?id=' + this.seller.id)
         .then(this.getSellerInfoSucc)
         .catch(this.geSellertInfoErr)
     },
@@ -41,7 +47,7 @@ export default {
       const ERR_OK = 0
       const res = response.data
       if (res.errno === ERR_OK && res.data) {
-        this.seller = res.data
+        this.seller = Object.assign({}, this.seller, res.data) // 给对象添加属性
         console.log(this.seller)
       }
     },

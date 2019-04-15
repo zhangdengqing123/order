@@ -6,7 +6,7 @@ export default new Vuex.Store({
   state: {
     goods: [],
     ratings: [],
-    seller: []
+    seller: {}
   },
   getters: {
     selectFoods: state => {

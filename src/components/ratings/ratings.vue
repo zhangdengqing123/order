@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     getRatingsInfo () {
-      axios.get('/api/ratings')
+      axios.get('/api/ratings?id=' + this.seller.id)
         .then(this.getRatingsInfoSucc)
     },
     getRatingsInfoSucc (response) {
@@ -149,7 +149,7 @@ export default {
 @import '../../common/less/mixni.less';
 .ratings {
   position: absolute;
-  top: 174px;
+  top: 8.7rem;
   bottom: 0;
   left: 0;
   width: 100%;
