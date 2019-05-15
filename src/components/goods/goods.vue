@@ -1,5 +1,6 @@
 <template>
   <div class="goods" v-if="goods.length">
+    <div v-dir1="cout" v-if="cout > 5">000</div> <!--自定义指定通过 directives-->
     <div class="menu-wrapper" ref="menus">
       <ul class="menu">
         <li class="menu-item"
@@ -9,8 +10,10 @@
           @click="selectMeun($event, index)"
         >
           <span class="text border-1px-t">
-            <span class="icon" v-if="item.type > 0" :class="classMap[item.type]"></span>
-              {{item.name}}
+            <span class="icon" v-if="item.type > 0" :class="classMap[item.type]">
+            </span>
+            {{item.name}}
+            <i class="textNum" v-if="item.count > 0">{{item.count}}</i>
           </span>
         </li>
       </ul>
@@ -70,7 +73,28 @@ export default {
     return {
       listHeight: [],
       scrollY: 0,
-      selectedFood: {}
+      selectedFood: {},
+      cout: 3,
+      nums: 0
+    }
+  },
+  directives: { // 自定义指令
+    dir1: {
+      bind (el, bindings, value, oldValue) {
+        console.log('这是bind')
+        console.log(value)
+        el.innerHTML = bindings.value
+      },
+      update (el, bindings) {
+        console.log('这里更新了')
+        el.innerHTML = bindings.value
+        if (bindings.value < 5) {
+          console.log(bindings.value)
+        }
+      },
+      unbind () {
+        console.log('解除绑定')
+      }
     }
   },
   components: {
@@ -137,7 +161,23 @@ export default {
   },
   computed: {
     goods () {
-      return this.$store.state.goods
+      const goods = this.$store.state.goods
+      let ret = []
+      goods.forEach(good => {
+        const {name, type, foods} = good
+        let count = 0
+        foods.forEach(food => {
+          count += food.count || 0
+        })
+        ret.push({
+          name,
+          type,
+          foods,
+          count
+        })
+      })
+      console.log(ret)
+      return ret
     },
     currentIndex () {
       for (let i = 0; i < this.listHeight.length; i++) { // 遍历每个li累加的高度值
@@ -214,6 +254,12 @@ export default {
           vertical-align: middle;
           .border-1px-t(rgba(7, 17, 27, 0.1));
           font-size: .6rem;
+          .textNum {
+            display: inline-block;
+            font-style: normal;
+            font-weight: bold;
+            color:#00b43c;
+          }
         }
       }
     }
